@@ -2,10 +2,7 @@ import re
 from typing import List, Dict
 from pydantic import BaseModel
 
-try:
-    import spacy
-except ImportError:
-    spacy = None
+
 
 # Mock database of market needs - In a real app this would come from an API or DB
 MARKET_NEEDS = {
@@ -23,37 +20,12 @@ class AnalysisResult(BaseModel):
 
 class ResumeAnalyzer:
     def __init__(self):
-        self.nlp = None
-
-    def _load_model(self):
-        if self.nlp:
-            return
-
-        if spacy:
-            try:
-                # We assume the model is downloaded via `python -m spacy download en_core_web_sm`
-                self.nlp = spacy.load("en_core_web_sm")
-            except Exception as e:
-                print(f"Warning: spacy model not found or error loading: {e}. Fallback to blank model.")
-                try:
-                    self.nlp = spacy.blank("en")
-                except:
-                    self.nlp = None
-        else:
-            print("Warning: spacy not installed. Using simple regex matching.")
+        pass
 
     def analyze(self, text: str) -> AnalysisResult:
         text_lower = text.lower()
         found_skills = []
         matched_weights = 0
-        
-        # Simple extraction based on our market needs dictionary
-        self._load_model()
-        if self.nlp:
-            doc = self.nlp(text_lower)
-            # In a real app with spacy, we might use NER or lemmatization here
-            # For now, we stick to simple keyword matching even with spacy to be consistent
-            # but we could use doc.ents etc.
         
         # Robust keyword matching (works with or without spacy)
         for skill, weight in MARKET_NEEDS.items():
