@@ -24,6 +24,11 @@ class AnalysisResult(BaseModel):
 class ResumeAnalyzer:
     def __init__(self):
         self.nlp = None
+
+    def _load_model(self):
+        if self.nlp:
+            return
+
         if spacy:
             try:
                 # We assume the model is downloaded via `python -m spacy download en_core_web_sm`
@@ -43,6 +48,7 @@ class ResumeAnalyzer:
         matched_weights = 0
         
         # Simple extraction based on our market needs dictionary
+        self._load_model()
         if self.nlp:
             doc = self.nlp(text_lower)
             # In a real app with spacy, we might use NER or lemmatization here

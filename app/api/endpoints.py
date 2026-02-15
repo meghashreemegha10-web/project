@@ -27,7 +27,7 @@ async def analyze_resume(request: Request, file: UploadFile = File(...)):
     
     # Save file temporarily
     filename = f"{uuid.uuid4()}_{file.filename}"
-    upload_dir = "data/uploads"
+    upload_dir = "/tmp"
     os.makedirs(upload_dir, exist_ok=True)
     file_path = os.path.join(upload_dir, filename)
     
