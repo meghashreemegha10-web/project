@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise AI Resume Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center p-6">
+
+    <div class="glass w-full max-w-2xl p-8 rounded-2xl shadow-xl">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">AI Resume Analyzer</h1>
+            <p class="text-gray-600 text-lg">Upload a resume to get an instant market-match score.</p>
+        </div>
+
+        {% if error %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
+        <form action="/analyze" method="post" enctype="multipart/form-data" class="space-y-6">
+            <div class="flex items-center justify-center w-full">
+                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-indigo-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-50 transition-colors">
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg class="w-10 h-10 mb-4 text-indigo-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                        </svg>
+                        <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                        <p class="text-xs text-gray-500">PDF or DOCX (MAX. 10MB)</p>
+                    </div>
+                    <input id="dropzone-file" name="file" type="file" class="hidden" accept=".pdf,.doc,.docx" required />
+                </label>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="w-full text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-lg px-5 py-3.5 focus:outline-none shadow-lg transform transition hover:scale-[1.02]">
+                    Analyze Resume
+                </button>
+            </div>
+        </form>
+        
+        <div class="mt-8 text-center text-sm text-gray-500">
+            <p>Secure & Private. Files are processed locally and deleted immediately.</p>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('dropzone-file');
+        const fileNameDisplay = document.querySelector('.text-indigo-500'); // Just reuse the icon for now or change text
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files.length > 0) {
+                const fileName = this.files[0].name;
+                document.querySelector('p.text-sm span').textContent = fileName;
+                document.querySelector('p.text-xs').textContent = "Ready to analyze";
+            }
+        });
+    </script>
+</body>
+</html>

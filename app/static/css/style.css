@@ -1,0 +1,4 @@
+/* Basic overrides if needed */
+body {
+    -webkit-font-smoothing: antialiased;
+}
